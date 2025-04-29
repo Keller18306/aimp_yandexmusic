@@ -2,26 +2,28 @@
 #include "helpers/AIMPString.h"
 #include "Plugin.h"
 
-HRESULT Library::RegisterExtension(IAIMPCore *core)
+using namespace std;
+
+HRESULT DataStorage::RegisterExtension(IAIMPCore *core)
 {
-    return core->RegisterExtension(IID_IAIMPServiceMusicLibrary, static_cast<IAIMPMLExtensionDataStorage *>(new Library()));
+    return core->RegisterExtension(IID_IAIMPServiceMusicLibrary, static_cast<IAIMPMLExtensionDataStorage *>(new DataStorage()));
 }
 
-void Library::Initialize(IAIMPMLDataStorageManager *Manager)
+void DataStorage::Initialize(IAIMPMLDataStorageManager *Manager)
 {
     printf("TEST!!!!!!!!!!!!!!!!!!");
 }
 
-void Library::Finalize()
+void DataStorage::Finalize()
 {
 }
 
-HRESULT WINAPI Library::GetValueAsObject(int PropertyID, REFIID IID, void **Value)
+HRESULT WINAPI DataStorage::GetValueAsObject(int PropertyID, REFIID IID, void **Value)
 {
     switch (PropertyID)
     {
     case AIMPML_DATASTORAGE_PROPID_ID:
-        *Value = AIMPString(L"testPluginId");
+        *Value = AIMPString(Plugin::id + wstring(L".DataStorage"));
         break;
 
     case AIMPML_DATASTORAGE_PROPID_CAPTION:
@@ -32,7 +34,7 @@ HRESULT WINAPI Library::GetValueAsObject(int PropertyID, REFIID IID, void **Valu
     return S_OK;
 }
 
-HRESULT WINAPI Library::GetValueAsInt32(int PropertyID, int *Value)
+HRESULT WINAPI DataStorage::GetValueAsInt32(int PropertyID, int *Value)
 {
     if (PropertyID == AIMPML_DATASTORAGE_PROPID_CAPABILITIES)
     {
@@ -42,7 +44,7 @@ HRESULT WINAPI Library::GetValueAsInt32(int PropertyID, int *Value)
     return S_OK;
 }
 
-HRESULT WINAPI Library::GetFields(int Schema, IAIMPObjectList **List)
+HRESULT WINAPI DataStorage::GetFields(int Schema, IAIMPObjectList **List)
 {
     Plugin::getAIMPCore()->CreateObject(IID_IAIMPObjectList, reinterpret_cast<void **>(List));
 
@@ -57,9 +59,17 @@ HRESULT WINAPI Library::GetFields(int Schema, IAIMPObjectList **List)
         prop->SetValueAsInt32(AIMPML_FIELD_PROPID_TYPE, AIMPML_FIELDTYPE_STRING);
         prop->SetValueAsInt32(AIMPML_FIELD_PROPID_FLAGS, AIMPML_FIELDFLAG_FILTERING);
 
+        (*List)->Add(prop);
+
+        Plugin::getAIMPCore()->CreateObject(IID_IAIMPMLDataField, reinterpret_cast<void **>(&prop));
+
         prop->SetValueAsObject(AIMPML_FIELD_PROPID_NAME, AIMPString(AIMPML_RESERVED_FIELD_FILENAME));
         prop->SetValueAsInt32(AIMPML_FIELD_PROPID_TYPE, AIMPML_FIELDTYPE_STRING);
         prop->SetValueAsInt32(AIMPML_FIELD_PROPID_FLAGS, AIMPML_FIELDFLAG_FILTERING);
+
+        (*List)->Add(prop);
+
+        Plugin::getAIMPCore()->CreateObject(IID_IAIMPMLDataField, reinterpret_cast<void **>(&prop));
 
         prop->SetValueAsObject(AIMPML_FIELD_PROPID_NAME, AIMPString(L"Test Label"));
         prop->SetValueAsInt32(AIMPML_FIELD_PROPID_TYPE, AIMPML_FIELDTYPE_STRING);
@@ -84,19 +94,26 @@ HRESULT WINAPI Library::GetFields(int Schema, IAIMPObjectList **List)
     return S_OK;
 }
 
-HRESULT WINAPI Library::GetGroupingPresets(int Schema, IAIMPMLGroupingPresets *Presets)
+HRESULT WINAPI DataStorage::GetGroupingPresets(int Schema, IAIMPMLGroupingPresets *Presets)
 {
     if (Schema == AIMPML_GROUPINGPRESETS_SCHEMA_BUILTIN)
     {
         IAIMPMLGroupingPreset *Preset = nullptr;
-        Presets->Add(AIMPString(L"Test12312"), nullptr, 0, new GroupingTreeDataProvider(), &Preset);
+        Presets->Add(AIMPString(L"Test12312"), AIMPString(L"Test12312"), 0, new GroupingTreeDataProvider(), &Preset);
     }
 
     return S_OK;
 }
 
-HRESULT WINAPI Library::GetData(IAIMPObjectList *Fields, IAIMPMLDataFilter *Filter, IUnknown *Reserved, /*in /out*/ IUnknown **PageID, IUnknown **Data)
+HRESULT WINAPI DataStorage::GetData(IAIMPObjectList *Fields, IAIMPMLDataFilter *Filter, IUnknown *Reserved, /*in /out*/ IUnknown **PageID, IUnknown **Data)
 {
+    return S_OK;
+}
+
+HRESULT WINAPI GroupingTreeDataProvider::GetData(IAIMPMLGroupingTreeSelection *Selection, IAIMPMLGroupingTreeDataProviderSelection **Data)
+{
+    *Data = new GroupingTreeDataProviderSelection();
+
     return S_OK;
 }
 
@@ -105,7 +122,37 @@ HRESULT WINAPI GroupingTreeDataProvider::AppendFilter(IAIMPMLDataFilterGroup *Fi
     return S_OK;
 }
 
-HRESULT WINAPI GroupingTreeDataProvider::GetData(IAIMPMLGroupingTreeSelection *Selection, IAIMPMLGroupingTreeDataProviderSelection **Data)
+LongWord WINAPI GroupingTreeDataProviderSelection::GetFlags()
 {
+    return AIMPML_GROUPINGTREENODE_FLAG_STANDALONE;
+}
+
+HRESULT WINAPI GroupingTreeDataProviderSelection::GetDisplayValue(IAIMPString **S)
+{
+    *S = AIMPString(L"Test1");
+
     return S_OK;
+}
+
+HRESULT WINAPI GroupingTreeDataProviderSelection::GetImageIndex(int *Index)
+{
+    *Index = AIMPML_FIELDIMAGE_FOLDER;
+
+    return S_OK;
+}
+
+HRESULT WINAPI GroupingTreeDataProviderSelection::GetValue(IAIMPString **FieldName, VARIANT *Value)
+{
+    *FieldName = AIMPString(L"Test2");
+
+    VariantInit(Value);
+    Value->vt = VT_I4;
+    Value->lVal = index;
+
+    return S_OK;
+}
+
+BOOL WINAPI GroupingTreeDataProviderSelection::NextRow()
+{
+    return ++index < 3;
 }

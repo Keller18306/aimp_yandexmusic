@@ -18,21 +18,16 @@ IAIMPCore *Plugin::getAIMPCore()
 
 PWCHAR Plugin::InfoGet(int index)
 {
-	static WCHAR name[] = L"Yandex Music";
-	static WCHAR author[] = L"Keller";
-	static WCHAR shortDesc[] = L"Short Description";
-	static WCHAR fullDesc[] = L"Full Description of the Plugin";
-
 	switch (index)
 	{
 	case AIMP_PLUGIN_INFO_NAME:
-		return name;
+		return const_cast<PWCHAR>(name);
 	case AIMP_PLUGIN_INFO_AUTHOR:
-		return author;
+		return const_cast<PWCHAR>(author);
 	case AIMP_PLUGIN_INFO_SHORT_DESCRIPTION:
-		return shortDesc;
+		return const_cast<PWCHAR>(shortDesc);
 	case AIMP_PLUGIN_INFO_FULL_DESCRIPTION:
-		return fullDesc;
+		return const_cast<PWCHAR>(fullDesc);
 	}
 
 	return nullptr;
@@ -47,7 +42,7 @@ HRESULT WINAPI Plugin::Initialize(IAIMPCore *core)
 {
 	core_ptr = core;
 
-	Library::RegisterExtension(core);
+	DataStorage::RegisterExtension(core);
 
 	return S_OK;
 }

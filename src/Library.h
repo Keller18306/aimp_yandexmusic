@@ -2,7 +2,7 @@
 #include <apiMusicLibrary.h>
 #include "helpers/IUnknownBridge.h"
 
-class Library : public IUnknownBridge<IAIMPMLExtensionDataStorage>, IAIMPMLDataProvider2
+class DataStorage : public IUnknownBridge<IAIMPMLExtensionDataStorage>, IAIMPMLDataProvider2
 {
 public:
     typedef IUnknownBridge<IAIMPMLExtensionDataStorage> Base;
@@ -56,4 +56,17 @@ public:
 
     DWORD WINAPI GetCapabilities() { return 0; };
     HRESULT WINAPI GetFieldForAlphabeticIndex(IAIMPString **FieldName) { return E_NOTIMPL; }
+};
+
+class GroupingTreeDataProviderSelection : public IUnknownBridge<IAIMPMLGroupingTreeDataProviderSelection, &IID_IAIMPMLGroupingTreeDataProviderSelection>
+{
+    public:
+        HRESULT WINAPI GetDisplayValue(IAIMPString **S);
+        LongWord WINAPI GetFlags();
+        HRESULT WINAPI GetImageIndex(int *Index);
+        HRESULT WINAPI GetValue(IAIMPString **FieldName, VARIANT *Value);
+        BOOL WINAPI NextRow();
+
+    private:
+        unsigned int index = 0;
 };

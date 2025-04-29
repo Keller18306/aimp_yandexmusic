@@ -5,7 +5,7 @@
 class Plugin : public IUnknownBridge<IAIMPPlugin>
 {
 public:
-	static IAIMPCore* getAIMPCore() { return core_ptr; }
+	static IAIMPCore *getAIMPCore();
 
 	PWCHAR WINAPI InfoGet(int index);
 	DWORD WINAPI InfoGetCategories();

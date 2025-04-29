@@ -1,10 +1,23 @@
 #include "Plugin.h"
+#include "Library.h"
+#include <stdexcept>
 
 using namespace std;
 
-IAIMPCore* Plugin::core_ptr = nullptr;
+IAIMPCore *Plugin::core_ptr = nullptr;
 
-PWCHAR Plugin::InfoGet(int index) {
+IAIMPCore *Plugin::getAIMPCore()
+{
+	if (!core_ptr)
+	{
+		throw runtime_error("Core not initialized");
+	}
+
+	return core_ptr;
+}
+
+PWCHAR Plugin::InfoGet(int index)
+{
 	static WCHAR name[] = L"Yandex Music";
 	static WCHAR author[] = L"Keller";
 	static WCHAR shortDesc[] = L"Short Description";
@@ -25,20 +38,29 @@ PWCHAR Plugin::InfoGet(int index) {
 	return nullptr;
 }
 
-DWORD WINAPI Plugin::InfoGetCategories() {
+DWORD WINAPI Plugin::InfoGetCategories()
+{
 	return AIMP_PLUGIN_CATEGORY_ADDONS;
 }
 
-HRESULT WINAPI Plugin::Initialize(IAIMPCore* core) {
+HRESULT WINAPI Plugin::Initialize(IAIMPCore *core)
+{
+	core_ptr = core;
+
+	Library::RegisterExtension(core);
+
 	return S_OK;
 }
 
-HRESULT WINAPI Plugin::Finalize() {
+HRESULT WINAPI Plugin::Finalize()
+{
 	return S_OK;
 }
 
-extern "C" {
-	HRESULT __declspec(dllexport) WINAPI AIMPPluginGetHeader(IAIMPPlugin** header) {
+extern "C"
+{
+	HRESULT __declspec(dllexport) WINAPI AIMPPluginGetHeader(IAIMPPlugin **header)
+	{
 		*header = new Plugin();
 
 		return S_OK;

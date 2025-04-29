@@ -2,18 +2,20 @@
 
 #include "apiCore.h"
 
-template <typename T>
-class IUnknownBridge : public T, public IUnknown {
+template <typename T, const IID *InterfaceIID = nullptr>
+class IUnknownBridge : public T, public IUnknown
+{
 public:
 	IUnknownBridge() : refCount(1) {}
 
-	HRESULT WINAPI QueryInterface(REFIID riid, void** ppvObj) override {
+	HRESULT WINAPI QueryInterface(REFIID riid, void **ppvObj) override
+	{
 		if (!ppvObj)
 			return E_INVALIDARG;
 
 		*ppvObj = nullptr;
 
-		if (IsEqualIID(riid, IID_IUnknown))
+		if (IsEqualIID(riid, IID_IUnknown) || (InterfaceIID && IsEqualIID(riid, *InterfaceIID)))
 		{
 			*ppvObj = (LPVOID)this;
 			AddRef();
@@ -24,14 +26,17 @@ public:
 		return E_NOINTERFACE;
 	}
 
-	ULONG WINAPI AddRef() override {
+	ULONG WINAPI AddRef() override
+	{
 		return InterlockedIncrement(&refCount);
 	}
 
-	ULONG WINAPI Release() override {
+	ULONG WINAPI Release() override
+	{
 		ULONG ulRefCount = InterlockedDecrement(&refCount);
 
-		if (ulRefCount == 0) {
+		if (ulRefCount == 0)
+		{
 			delete this;
 		}
 

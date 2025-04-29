@@ -1,0 +1,46 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cmake",
+			"label": "CMake: Build",
+			"command": "build",
+			"targets": [
+				"all"
+			],
+			"preset": "${command:cmake.activeBuildPresetName}",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"detail": "Задача шаблона CMake сборка"
+		},
+		{
+			"label": "Copy DLL",
+			"type": "shell",
+			"command": "copy",
+			"args": [
+				"${workspaceFolder}\\out\\build\\x64-debug\\aimp_yandexmusic.dll",
+				"C:\\Program Files\\AIMP\\Plugins\\aimp_yandexmusic\\"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always"
+			}
+		},
+		{
+			"label": "Build And Copy",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"CMake: Build",
+				"Copy DLL"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+	]
+}

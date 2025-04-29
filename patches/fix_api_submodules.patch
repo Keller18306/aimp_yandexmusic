@@ -1,0 +1,34 @@
+diff --git a/.gitmodules b/.gitmodules
+index 79e6b75..f324862 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,12 +1,12 @@
+ [submodule "deps/cpr"]
+ 	path = deps/cpr
+-	url = https://github.com/libcpr/cpr
++	url = https://github.com/libcpr/cpr.git
+ [submodule "deps/fmt"]
+ 	path = deps/fmt
+-	url = https://github.com/pumPCin/fmt
++	url = https://github.com/fmtlib/fmt.git
+ [submodule "deps/pugixml"]
+ 	path = deps/pugixml
+-	url = https://github.com/zeux/pugixml
++	url = https://github.com/zeux/pugixml.git
+ [submodule "deps/nlohmann_json"]
+ 	path = deps/nlohmann_json
+-	url = https://github.com/nlohmann/json
++	url = https://github.com/nlohmann/json.git
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d62cb7b..3472613 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,7 +25,7 @@ execute_process(
+ FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git)
+ FetchContent_Declare(pugixml GIT_REPOSITORY https://github.com/zeux/pugixml.git)
+ FetchContent_Declare(nlohmann_json GIT_REPOSITORY https://github.com/nlohmann/json.git)
+-FetchContent_Declare(fmt GIT_REPOSITORY https://github.com/pumPCin/fmt)
++FetchContent_Declare(fmt GIT_REPOSITORY https://github.com/fmtlib/fmt.git)
+ 
+ FetchContent_MakeAvailable(cpr)
+ FetchContent_MakeAvailable(pugixml)

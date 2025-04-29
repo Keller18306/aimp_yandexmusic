@@ -1,22 +1,23 @@
-/************************************************/
-/*                                              */
-/*          AIMP Programming Interface          */
-/*               v5.30 build 2500               */
-/*                                              */
-/*                Artem Izmaylov                */
-/*                (C) 2006-2023                 */
-/*                 www.aimp.ru                  */
-/*               support@aimp.ru                */
-/*                                              */
-/************************************************/
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Project:   AIMP
+//             Programming Interface
+//
+//  Target:    v5.40 build 2650
+//
+//  Purpose:   Menus API
+//
+//  Author:    Artem Izmaylov
+//             © 2006-2025
+//             www.aimp.ru
+//
 #ifndef apiMenuH
 #define apiMenuH
 
-#include <windows.h>
 #include <unknwn.h>
 #include "apiActions.h"
 #include "apiObjects.h"
+#include "apiTypes.h"
 
 static const GUID IID_IAIMPMenuItem = {0x41494D50, 0x4D65, 0x6E75, 0x49, 0x74, 0x65, 0x6D, 0x00, 0x00, 0x00, 0x00};
 static const GUID IID_IAIMPServiceMenuManager = {0x41494D50, 0x5372, 0x764D, 0x65, 0x6E, 0x75, 0x4D, 0x6E, 0x67, 0x72, 0x00};
@@ -25,7 +26,7 @@ static const GUID IID_IAIMPServiceMenuManager = {0x41494D50, 0x5372, 0x764D, 0x6
 const int AIMP_MENUITEM_PROPID_CUSTOM       = 0;
 const int AIMP_MENUITEM_PROPID_ACTION       = 1;
 const int AIMP_MENUITEM_PROPID_ID           = 2;
-const int AIMP_MENUITEM_PROPID_NAME         = 3;
+const int AIMP_MENUITEM_PROPID_CAPTION      = 3;
 const int AIMP_MENUITEM_PROPID_ENABLED      = 4;
 const int AIMP_MENUITEM_PROPID_STYLE        = 5; // One of the AIMP_MENUITEM_STYLE_XXX
 const int AIMP_MENUITEM_PROPID_EVENT        = 6;
@@ -36,6 +37,8 @@ const int AIMP_MENUITEM_PROPID_VISIBLE      = 12;
 const int AIMP_MENUITEM_PROPID_CHECKED		= 13;
 const int AIMP_MENUITEM_PROPID_DEFAULT      = 14;
 const int AIMP_MENUITEM_PROPID_SHORTCUT     = 15;
+
+const int AIMP_MENUITEM_PROPID_NAME         = 3; // deprecated
 
 // Styles for the AIMP_MENUITEM_PROPID_STYLE property
 const int AIMP_MENUITEM_STYLE_NORMAL   = 0;

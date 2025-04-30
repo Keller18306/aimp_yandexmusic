@@ -8,6 +8,6 @@ public:
     HRESULT WINAPI AppendFilter(IAIMPMLDataFilterGroup *Filter, IAIMPMLGroupingTreeSelection *Selection);
     HRESULT WINAPI GetData(IAIMPMLGroupingTreeSelection *Selection, IAIMPMLGroupingTreeDataProviderSelection **Data);
 
-    DWORD WINAPI GetCapabilities() { return 0; };
+    DWORD WINAPI GetCapabilities() { return AIMPML_GROUPINGTREEDATAPROVIDER_CAP_HIDEALLDATA; };
     HRESULT WINAPI GetFieldForAlphabeticIndex(IAIMPString **FieldName) { return E_NOTIMPL; }
 };

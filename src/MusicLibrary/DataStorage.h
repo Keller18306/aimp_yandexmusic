@@ -1,6 +1,6 @@
 #pragma once
-#include <apiMusicLibrary.h>
-#include "helpers/IUnknownBridge.h"
+#include <aimp_sdk/apiMusicLibrary.h>
+#include "../helpers/IUnknownBridge.h"
 
 class DataStorage : public IUnknownBridge<IAIMPMLExtensionDataStorage>, IAIMPMLDataProvider2
 {
@@ -46,27 +46,4 @@ public:
 
         return Base::QueryInterface(riid, ppvObject);
     }
-};
-
-class GroupingTreeDataProvider : public IUnknownBridge<IAIMPMLGroupingTreeDataProvider, &IID_IAIMPMLGroupingTreeDataProvider>
-{
-public:
-    HRESULT WINAPI AppendFilter(IAIMPMLDataFilterGroup *Filter, IAIMPMLGroupingTreeSelection *Selection);
-    HRESULT WINAPI GetData(IAIMPMLGroupingTreeSelection *Selection, IAIMPMLGroupingTreeDataProviderSelection **Data);
-
-    DWORD WINAPI GetCapabilities() { return 0; };
-    HRESULT WINAPI GetFieldForAlphabeticIndex(IAIMPString **FieldName) { return E_NOTIMPL; }
-};
-
-class GroupingTreeDataProviderSelection : public IUnknownBridge<IAIMPMLGroupingTreeDataProviderSelection, &IID_IAIMPMLGroupingTreeDataProviderSelection>
-{
-    public:
-        HRESULT WINAPI GetDisplayValue(IAIMPString **S);
-        LongWord WINAPI GetFlags();
-        HRESULT WINAPI GetImageIndex(int *Index);
-        HRESULT WINAPI GetValue(IAIMPString **FieldName, VARIANT *Value);
-        BOOL WINAPI NextRow();
-
-    private:
-        unsigned int index = 0;
 };

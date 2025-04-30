@@ -1,8 +1,7 @@
-#include "Library.h"
-#include "helpers/AIMPString.h"
-#include "Plugin.h"
-
-using namespace std;
+#include "DataStorage.h"
+#include "../helpers/AIMPString.h"
+#include "../Plugin.h"
+#include "GroupingTreeDataProvider.h"
 
 HRESULT DataStorage::RegisterExtension(IAIMPCore *core)
 {
@@ -23,7 +22,7 @@ HRESULT WINAPI DataStorage::GetValueAsObject(int PropertyID, REFIID IID, void **
     switch (PropertyID)
     {
     case AIMPML_DATASTORAGE_PROPID_ID:
-        *Value = AIMPString(Plugin::id + wstring(L".DataStorage"));
+        *Value = AIMPString(Plugin::id + std::wstring(L".DataStorage"));
         break;
 
     case AIMPML_DATASTORAGE_PROPID_CAPTION:
@@ -108,51 +107,4 @@ HRESULT WINAPI DataStorage::GetGroupingPresets(int Schema, IAIMPMLGroupingPreset
 HRESULT WINAPI DataStorage::GetData(IAIMPObjectList *Fields, IAIMPMLDataFilter *Filter, IUnknown *Reserved, /*in /out*/ IUnknown **PageID, IUnknown **Data)
 {
     return S_OK;
-}
-
-HRESULT WINAPI GroupingTreeDataProvider::GetData(IAIMPMLGroupingTreeSelection *Selection, IAIMPMLGroupingTreeDataProviderSelection **Data)
-{
-    *Data = new GroupingTreeDataProviderSelection();
-
-    return S_OK;
-}
-
-HRESULT WINAPI GroupingTreeDataProvider::AppendFilter(IAIMPMLDataFilterGroup *Filter, IAIMPMLGroupingTreeSelection *Selection)
-{
-    return S_OK;
-}
-
-LongWord WINAPI GroupingTreeDataProviderSelection::GetFlags()
-{
-    return AIMPML_GROUPINGTREENODE_FLAG_STANDALONE;
-}
-
-HRESULT WINAPI GroupingTreeDataProviderSelection::GetDisplayValue(IAIMPString **S)
-{
-    *S = AIMPString(L"Test1");
-
-    return S_OK;
-}
-
-HRESULT WINAPI GroupingTreeDataProviderSelection::GetImageIndex(int *Index)
-{
-    *Index = AIMPML_FIELDIMAGE_FOLDER;
-
-    return S_OK;
-}
-
-HRESULT WINAPI GroupingTreeDataProviderSelection::GetValue(IAIMPString **FieldName, VARIANT *Value)
-{
-    *FieldName = AIMPString(L"Test2");
-
-    VariantInit(Value);
-    Value->vt = VT_I4;
-    Value->lVal = index;
-
-    return S_OK;
-}
-
-BOOL WINAPI GroupingTreeDataProviderSelection::NextRow()
-{
-    return ++index < 3;
 }

@@ -1,8 +1,6 @@
 #pragma once
-
 #include <string>
-
-#include "apiObjects.h"
+#include "aimp_sdk/apiObjects.h"
 
 class AIMPString
 {

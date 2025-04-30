@@ -1,5 +1,5 @@
 #include "Plugin.h"
-#include "Library.h"
+#include "MusicLibrary/DataStorage.h"
 #include <stdexcept>
 
 using namespace std;

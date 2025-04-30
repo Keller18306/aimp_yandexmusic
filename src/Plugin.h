@@ -1,5 +1,5 @@
 #pragma once
-#include <apiPlugin.h>
+#include <aimp_sdk/apiPlugin.h>
 #include "helpers/IUnknownBridge.h"
 
 class Plugin : public IUnknownBridge<IAIMPPlugin>

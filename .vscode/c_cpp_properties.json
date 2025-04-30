@@ -3,8 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/deps/aimp_sdk"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/deps/**"
             ],
             "defines": [
                 "_DEBUG",

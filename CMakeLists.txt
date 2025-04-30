@@ -37,7 +37,7 @@ file(GLOB_RECURSE SOURCES
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-  ${CMAKE_SOURCE_DIR}/deps/aimp_sdk/
+  ${CMAKE_SOURCE_DIR}/deps/
 )
 
 target_link_libraries("${PROJECT_NAME}" ymcppapi)

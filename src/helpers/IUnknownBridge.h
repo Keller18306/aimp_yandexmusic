@@ -1,6 +1,6 @@
 #pragma once
 
-#include "apiCore.h"
+#include "aimp_sdk/apiCore.h"
 
 template <typename T, const IID *InterfaceIID = nullptr>
 class IUnknownBridge : public T, public IUnknown

@@ -1,10 +1,12 @@
 #include "Plugin.h"
+#include "OptionsDialog.h"
 #include "MusicLibrary/DataStorage.h"
 #include <stdexcept>
 
 using namespace std;
 
 IAIMPCore *Plugin::core_ptr = nullptr;
+Config *Plugin::config = nullptr;
 
 IAIMPCore *Plugin::getAIMPCore()
 {
@@ -42,7 +44,9 @@ HRESULT WINAPI Plugin::Initialize(IAIMPCore *core)
 {
 	core_ptr = core;
 
+	config = new Config(core);
 	DataStorage::RegisterExtension(core);
+	OptionsDialog::RegisterExtension(core);
 
 	return S_OK;
 }

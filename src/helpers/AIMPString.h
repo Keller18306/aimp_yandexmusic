@@ -5,7 +5,10 @@
 class AIMPString
 {
 public:
+    static AIMPString fromPropertyList(IAIMPPropertyList *list, int propertyId);
+
     AIMPString();
+    AIMPString(IAIMPString *string) : m_string(string) {}
     AIMPString(const std::wstring &string);
     AIMPString(const wchar_t *string);
     ~AIMPString();

@@ -6,6 +6,7 @@ project ("aimp_yandexmusic")
 set(CMAKE_DEBUG_OUTPUT ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(FETCHCONTENT_QUIET OFF)
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
 # Включение горячей перезагрузки для компиляторов MSVC, если поддерживается.
 if (POLICY CMP0141)
@@ -27,7 +28,7 @@ FetchContent_Declare(ymcppapi
 
 FetchContent_MakeAvailable(ymcppapi)
 
-message(STATUS "Downloaded yandex music api")
+message(STATUS "!!! READY: Yandex music api !!!")
 
 file(GLOB_RECURSE SOURCES
   "${CMAKE_SOURCE_DIR}/src/*.cpp"

@@ -1,5 +1,18 @@
 #include "AIMPString.h"
 #include "../Plugin.h"
+#include <stdexcept>
+
+AIMPString AIMPString::fromPropertyList(IAIMPPropertyList *list, int propertyId)
+{
+    IAIMPString *str = nullptr;
+
+    if (FAILED(list->GetValueAsObject(propertyId, IID_IAIMPString, reinterpret_cast<void **>(&str))))
+    {
+        throw std::runtime_error("Cannot get AIMPString from propterty list");
+    }
+
+    return AIMPString(str);
+}
 
 AIMPString::AIMPString()
 {

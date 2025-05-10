@@ -8,7 +8,7 @@ LongWord WINAPI GroupingTreeDataProviderSelection::GetFlags()
 
 HRESULT WINAPI GroupingTreeDataProviderSelection::GetDisplayValue(IAIMPString **S)
 {
-    *S = AIMPString(L"Test1");
+    *S = AIMPString(L"Test-" + std::to_wstring(index));
 
     return S_OK;
 }
@@ -22,7 +22,7 @@ HRESULT WINAPI GroupingTreeDataProviderSelection::GetImageIndex(int *Index)
 
 HRESULT WINAPI GroupingTreeDataProviderSelection::GetValue(IAIMPString **FieldName, VARIANT *Value)
 {
-    *FieldName = AIMPString(L"Test Label");
+    *FieldName = AIMPString(_dataField);
 
     VariantInit(Value);
     Value->vt = VT_I4;
